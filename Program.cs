@@ -21,17 +21,16 @@ namespace cosmos_db_mongodb_multithread
         static void Main(string[] args)
         {
             Console.WriteLine("thread:");
-            _client = int.Parse(Console.ReadLine());
-            //_client = 4;
+            //_client = int.Parse(Console.ReadLine());
+            _client = 10;
             Console.WriteLine("times:");
-            _times = int.Parse(Console.ReadLine());
-            //_times = 3;
+            //_times = int.Parse(Console.ReadLine());
+            _times = 1000;
 
             Initialize();
             Console.WriteLine(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff") + ", threads starting ...");
             Run(Constrants.cosmos_mongo_insert);
-
-            Console.ReadKey();
+            
         }
 
         private static void Initialize()
@@ -45,7 +44,8 @@ namespace cosmos_db_mongodb_multithread
                 _threads[Constrants.cosmos_mongo_insert].Add(new Thread(() =>
                 {
                     var cosmos_mongo = new cosmos_mongo();                    
-                    cosmos_mongo.Insert(_times);
+                    //cosmos_mongo.Insert(_times);
+                    cosmos_mongo.InsertMany(_times);
                 }));
             }
         }
@@ -56,8 +56,8 @@ namespace cosmos_db_mongodb_multithread
             foreach (var thread in _threads[key])
             {
                 thread.Start();
-            }            
-            Console.WriteLine(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff") + $", {key} end.");
+            }
+            
         }
 
     }
